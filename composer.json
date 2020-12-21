@@ -12,7 +12,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Ptero_request\\Manage_ptero\\":"/src"
+            "Ptero_request\\Manage_ptero\\":"packages/ptero_request/manage_ptero/src"
         }
     },
     "require": {}
