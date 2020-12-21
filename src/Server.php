@@ -171,7 +171,8 @@ class servers
                 }
                 
         
-                if($build){$verif=1;$method=$startup_verif;$req=["allocation"=> (int)$option["allocation"], (int)"memory"=>$option['limits']['memory'], (int)"swap"=> $option['limits']['swap'], "disk"=> (int)$option['limits']['disk'],"io"=> (int)$option['limits']["io"],"cpu"=>(int)$option['limits']["cpu"],"threads"=> null,"feature_limits"=> ["databases"=> (int)$option['features_limits']['databases'],(int)"allocations"=> $option['features_limits']['allocation'],"backups"=> (int)$option['backups']]];}
+                if($build){$verif=1;$method=$startup_verif;$req=["allocation"=> (int)$option["allocation"], (int)"memory"=>$option['limits']['memory'], (int)"swap"=> $option['limits']['swap'], "disk"=> (int)$option['limits']['disk'],"io"=> (int)$option['limits']["io"],
+                "cpu"=>(int)$option['limits']["cpu"],"threads"=> null,"feature_limits"=> ["databases"=> (int)$option['features_limits']['databases'],(int)"allocations"=> $option['features_limits']['allocation'],"backups"=> (int)$option['backups']]];}
                 elseif($details  && !$verif){$verif=1;$method=$details_verif;$req=["name"=> (String)$option['name'], "user"=>$this->getUserIdPtero(), "external_id"=>(String)$option['external_id'], "description"=> (String)$option['description']];}
                 elseif($startup && !$verif){$method=$build_verif;$verif=1;$req=["startup"=>(String) $option['startup'],"environment"=>(String)$option['environment'], "egg"=>(int)$option['egg'], "image"=>(String)$option['image'],"skip_scripts"=>false];}
 
