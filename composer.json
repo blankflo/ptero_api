@@ -15,12 +15,13 @@
             "Ptero_request\\Manage_ptero\\":"packages/ptero_request/manage_ptero/src"
         }
     },
+    "require": {},
     "extra": {
         "laravel": {
-            "providers": [
-                "Ptero_request\\Manage_ptero\\pteroServiceProvider"
-            ]
+          "providers": [
+            "Ptero_requet\\Manage_ptero\\pteroServiceProvider"
+          ]
+
         }
-    },
-    "require": {}
+      }
 }
