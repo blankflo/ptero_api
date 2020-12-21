@@ -1,0 +1,19 @@
+zrare{
+    "name": "ptero_request/manage_ptero",
+    "description": "a simple package to discuss with the ptero's api",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Florian",
+            "email": "lafonflorian0@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "Ptero_request\\Manage_ptero\\":"/src"
+        }
+    },
+    "require": {}
+}
