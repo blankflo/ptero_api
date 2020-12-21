@@ -19,7 +19,7 @@
     "extra": {
         "laravel": {
           "providers": [
-            "Ptero_requet\\Manage_ptero\\pteroServiceProvider"
+            "Ptero_request\\Manage_ptero\\pteroServiceProvider"
           ]
 
         }
