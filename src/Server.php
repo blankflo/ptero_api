@@ -1,11 +1,10 @@
 <?
-
 namespace Ptero_request\Manage_Ptero;
 use Illuminate\Http\Request;
 use App\http\Models;
 use Illuminate\Support\Facades\Http;
 
-class servers
+class Server
 {
 
     protected $user;//Instance de user
@@ -21,7 +20,7 @@ class servers
         $this->external_id = $external_id;
         $this->uri = $uri;
         $this->apikey = $apikey;
-        $this->endpoint = "api/application  /";
+        $this->endpoint = "api/application /";
     }
 
     private function verifyStatusCode(String $response, int $code_valid){

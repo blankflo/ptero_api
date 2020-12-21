@@ -1,15 +1,14 @@
 <?php
 namespace Ptero_request\Manage_Ptero;
-
 use Illuminate\Http\Request;
 use App\http\Models;
 use Illuminate\Support\Facades\Http;
 
-class client
+class Application
 {
 
     protected $user;//Instance de user
-    protected $uri ;
+    protected $uri;
     protected $endpoint;
     protected $apikey;
     
@@ -33,7 +32,7 @@ class client
 
 
 
-    private function GetUserId(){
+    public function GetUserId(){
         $id_user = $this->user->id;
         $return_array= [];
 
