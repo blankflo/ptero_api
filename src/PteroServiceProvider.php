@@ -6,7 +6,7 @@ use Application;
 
 use Illuminate\Support\ServiceProvider;
 
-class pteroServiceProvider extends ServiceProvider
+class PteroServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -15,7 +15,7 @@ class pteroServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->bind('server', function ($app) {
+        $this->app->bind('servers', function ($app) {
             return new Server();
           });
           $this->app->bind('application', function ($app) {
