@@ -12,14 +12,14 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Ptero\\Request\\":"/src"
+            "Ptero\\Request\\":"src/"
         }
     },
     "require": {},
     "extra": {
         "laravel": {
           "providers": [
-            "Ptero\\Request\\pteroServiceProvider"
+            "Ptero\\Request\\PteroServiceProvider"
           ]
 
         }
