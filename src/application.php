@@ -1,5 +1,5 @@
 <?php
-namespace Ptero_request\Manage_Ptero;
+namespace Ptero\Request;
 use Illuminate\Http\Request;
 use App\http\Models;
 use Illuminate\Support\Facades\Http;

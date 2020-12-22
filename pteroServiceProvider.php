@@ -1,6 +1,6 @@
 <?php
 
-namespace Ptero_request\Manage_ptero;
+namespace Ptero\Request;
 use Server;
 use Application;
 

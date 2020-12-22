@@ -1,5 +1,5 @@
 {
-    "name": "ptero_request/manage_ptero",
+    "name": "ptero/request",
     "description": "a simple package to discuss with the ptero's api",
     "type": "project",
     "license": "MIT",
@@ -12,14 +12,14 @@
     "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
-            "Ptero_request\\Manage_ptero\\":"packages/ptero_request/manage_ptero/src"
+            "Ptero\\Request\\":"/src"
         }
     },
     "require": {},
     "extra": {
         "laravel": {
           "providers": [
-            "Ptero_request\\Manage_ptero\\pteroServiceProvider"
+            "Ptero\\Request\\pteroServiceProvider"
           ]
 
         }
