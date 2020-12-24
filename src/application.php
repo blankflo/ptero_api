@@ -1,7 +1,10 @@
 <?php
-namespace Ptero\Request;
-use Illuminate\Http\Request;
+
+namespace App\Classes;
+ 
 use Illuminate\Support\Facades\Http;
+use App\Models\User;
+ use Exception;
 
 class Application
 {
@@ -16,98 +19,179 @@ class Application
     public function __construct(User $user, String $uri, $apikey)
     {
         $this->user = $user;
-        $this->external_id = $external_id;
         $this->uri = $uri;
         $this->apikey = $apikey;
-        $this->endpoint = "api/application/user/";
+        $this->endpoint = "api/application/";
     }
 
-    private function verifyStatusCode(String $response, int $code_valid){
+    private function verifyStatusCode($response, int $code_valid){
 
-        if($response->getStatusCode() !== $code_valid){
-            throw new Exception('Invalid Response');
-        }
+      
+        try{
+        if($response->getStatusCode() !== $code_valid || $response->getBody()==null){
+           
+            return false;        }
+         else {return true; }    
+           
+
+    }catch(Exeption $e){ return false ;}
+        
     }
 
+    public function getUserIdPtero(){
 
-
-    public function GetUserId(){
-        $id_user = $this->user->id;
-        $return_array= [];
+       
 
         try{
-            $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint.$id_user);
-    
-                $this->verifyStatusCode($response, 200);
+            $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint."users");
+         
+                
+          //  dump($response);
+
+                foreach($response['data'] as $obj){
+                  
+                  if($obj["attributes"]["email"] == $this->user->email){
+                      return$obj["attributes"]["id"]; 
+                  };
             }
-        catch(Exeption $e){
+        }
+            catch(Exeption $e){
     
                 return false;
-            }
-            foreach($parsed['data'] as $obj){
-                return $obj["attributes"]["id"];
+            } 
+        
+            return false;
+        }
+
+    // public function GetUserId(){
+    //     $id_user = $this->user->id;
+    //     $return_array= [];
+
+    //     try{
+    //         $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint.$id_user);
+    
+    //            // $this->verifyStatusCode($response, 200);
+    //         }
+    //     catch(Exeption $e){
+    
+    //             return false;
+    //         }
+    //         foreach($response['data'] as $obj){
+    //             return $obj["attributes"]["id"];
                 
-            }
-            return false;     
+    //         }
+    //         return false;     
 
-    }
+    // }
 
-    public function updateInfoUser(String $language="fr")
+    public function updateInfoUser(String $language="en")
     {
+
+        $request = [ "email"=>$this->user->email,
+                     "username"=> $this->user->username,
+
+                    "first_name"=>$this->user->name,
+                    "last_name"=> $this->user->name.$this->user->username,
+        
+                    "language"=>$language,
+        
+                    "password"=>$this->user->password];
         try{
         
-        $response = Http::timeout(400)->withToken($this->apikey)->put($this->uri.$this->endpoint.$this->getUserId(),[
+        $response = Http::timeout(400)->withToken($this->apikey)->patch($this->uri.$this->endpoint."users/".$this->getUserIdPtero(),$request);
 
-            "email"=>$this->user->email,
-            "username"=> $this->user->username,
-            
-            "first_name"=>$this->user->first_name,
-            "last_name"=> $this->user->last_name,
-            
-            "language"=>$language,
-            
-            "password"=>$this->user->$password
-            
+            foreach($response["attributes"] as $obj=>$value){   
+                switch($obj){
+                    case "username":
+                        if($request["username"] !== $value){return false;}
+                    break;
 
-            ]);
+                    case "email":
+                        if($request["email"] !== $value){return false;}
+                    break;
 
-            $this->verifyStatusCode($response, 201);
+                    case "first_name":
+                        if($request["first_name"] !== $value){return false;}
+                    break;
+
+                    case "last_name":
+                        if($request["last_name"] !== $value){return false;}
+                    break;
+
+                    case "language":
+                        if($request["language"] !== $value){return false;}
+                    break;
+                    default:
+                       break;
+                }
+                
+            }
+
+            if(!$this->verifyStatusCode($response, 200)){return false;}
         }
         catch(Exeption $e){
 
             return false;
         }
-        return false;     
+        return true;     
     }
+
+    // public function Getinfosserveur(){
+
+    //     $email =$this->user->email;
+
+    //     try{
+    //         $response = Http::timeout(400)->withToken($this->apikey)->put($this->uri.$this->endpoint."/users",[
+    //             "email"=>(String)$email    
+    //         ]);
+       
+    //             $this->verifyStatusCode($response, 201);
+
+    //             foreach($response['data'] as $obj){
+    //                 return $obj["attributes"]["id"];
+    //         }
+    //     }
+    //         catch(Exeption $e){
+    
+    //             return false;
+    //         } 
+        
+    //         return false;
+    //     }
     
     public function CreateUser(){
-
-        try{
-            $response = Http::timeout(400)->withToken($this->apikey)->put($this->uri.$this->endpoint."/user" ,[
+    if(!$this->user->ptero_account){
+        
     
-                "email"=>$this->email,
-                "username"=>$this->username,
-                "first_name"=>$this->first_name,
-                "last_name"=>$this->last_name
-                
+        try{
+            $response = Http::withToken($this->apikey)->post($this->uri.$this->endpoint."users",[
+    
+                "email"=>$this->user->email,
+                "username"=>$this->user->username,
+                "first_name"=>$this->user->name,
+                "last_name"=>"michou"
                 
                 ]);
-    
-                $this->verifyStatusCode($response, 201);
+                dump($response);
+
+             //  if( $this->verifyStatusCode($response, 201) == false){return false;};
+             if($this->getUserIdPtero()!==false){return true;}
             }
             catch(Exeption $e){
     
                 return false;
-            } 
-        return true;     
+            }}
+        else{ 
+        return true;} 
+    return false;
 
     }
     public function delete_user(){
 
         try{
-            $response = Http::timeout(400)->withToken($this->apikey)->delete($this->uri.$this->endpoint."/user"/$this->GetUserId());
+            $response = Http::timeout(400)->withToken($this->apikey)->delete($this->uri.$this->endpoint."user/".$this->getUserIdPtero());
     
-                $this->verifyStatusCode($response, 204);
+          //  if(!$this->verifyStatusCode($response, 204)){return false;}
             }
             catch(Exeption $e){
     
