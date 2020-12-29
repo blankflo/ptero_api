@@ -46,7 +46,7 @@ class Application
             $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint."users");
          
                 
-          //  dump($response);
+            dump(json_decode($response->getBody()));
 
                 foreach($response['data'] as $obj){
                   
@@ -91,7 +91,7 @@ class Application
                      "username"=> $this->user->username,
 
                     "first_name"=>$this->user->name,
-                    "last_name"=> $this->user->name.$this->user->username,
+                    "last_name"=> $this->user->lastname,
         
                     "language"=>$language,
         
@@ -160,19 +160,21 @@ class Application
     //     }
     
     public function CreateUser(){
-    if(!$this->user->ptero_account){
-        
+ 
+            dump($this->user->email);
+            dump($this->user->name);
+            dump($this->user->username);
     
         try{
             $response = Http::withToken($this->apikey)->post($this->uri.$this->endpoint."users",[
     
                 "email"=>$this->user->email,
-                "username"=>$this->user->username,
+                "username"=>$this->user->first_name." ".$this->user->last_name,
                 "first_name"=>$this->user->name,
                 "last_name"=>"michou"
                 
                 ]);
-                dump($response);
+                dump(json_decode($response->getBody()));
 
              //  if( $this->verifyStatusCode($response, 201) == false){return false;};
              if($this->getUserIdPtero()!==false){return true;}
@@ -180,9 +182,9 @@ class Application
             catch(Exeption $e){
     
                 return false;
-            }}
-        else{ 
-        return true;} 
+           
+        
+            }
     return false;
 
     }
