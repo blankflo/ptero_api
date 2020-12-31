@@ -1,23 +1,24 @@
 <?php
 namespace App\Classes;
 use Illuminate\Support\Facades\Http;
-use App\Models\User;
+use App\Models\{User, Survey};
 use Carbon\Carbon;
 use Exception;
-use App\Models\Survey;
 
 class Server_ptero
 {
+    public $created;
+
     protected $user;//Instance de user
     protected $uri;
     protected $endpoint;
     protected $apikey;
-    public static $count_server;
-    private $created=5120;
+    private static $count_server;
+   
     private $id_allocation;
     private $node_id;
     
-
+  
 
     public function __construct(User $user, String $uri, $apikey, String $endpoint="api/application/")
     {
@@ -44,7 +45,7 @@ class Server_ptero
     }
     private function UpdateSurvey(){
 
-        Survey::insert([
+        Survey::Create([
             "servers_started"=>$this->created,
             "servers_created"=>self::$count_server,
             "allocations_remaining"=>$this->allocation_remaining(),
@@ -57,8 +58,8 @@ class Server_ptero
         try{
             $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint."users"); // ok
          
-                
-          //  dump($response);
+    
+          //  ////dump($response);
 
                 foreach($response['data'] as $obj){
                   
@@ -82,7 +83,7 @@ class Server_ptero
             $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint."servers/external/".$external_id);
                                 
                 //$this->verifyStatusCode($response, 201);
-                dump(json_decode($response->getBody()));
+                ////dump(json_decode($response->getBody()));
 
                 if (!$this->verifyStatusCode($response, 200)){return false;}
 
@@ -107,7 +108,7 @@ class Server_ptero
             $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint."servers/external/".$external_id);
                                 
                 //$this->verifyStatusCode($response, 201);
-                dump(json_decode($response->getBody()));
+                ////dump(json_decode($response->getBody()));
 
                 if (!$this->verifyStatusCode($response, 200)){return false;}
             $response = json_decode($response->getBody());
@@ -136,7 +137,7 @@ class Server_ptero
                 $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint."servers/external/".$external_id);
                                     
                     //$this->verifyStatusCode($response, 201);
-                    dump(json_decode($response->getBody()));
+                    //dump(json_decode($response->getBody()));
     
                     if (!$this->verifyStatusCode($response, 200)){return false;}
     
@@ -144,7 +145,7 @@ class Server_ptero
                 $response = json_decode($response->getBody());
                 // $response = json_decode($response->getBody());
                     foreach($response->attributes as $rep=>$val){
-              
+                   
                         if($rep == "identifier"){
                             return $val;
                         }
@@ -263,14 +264,14 @@ $environment=[];
                   
              //    ];}}
         
-            // dump($this->listEgg());
+            // //dump($this->listEgg());
           
         
               
             $response = Http::timeout(30)->withToken($this->apikey)->post("https://app.nexifi.games/api/application/servers",$encode);
         
            if($this->verifyStatusCode($response, 201)){
-            $this->created++;
+            $this->created = self::$created++;
               
                 return true;
 
@@ -316,7 +317,7 @@ $environment=[];
         // $force = "force";
         // $force = ($force) ?: '';
 
-        $id_server;
+        $id_server ;
 
         if($this->getInfoServer($external_id)!== false){$id_server = $this->getInfoServer($external_id);
        
@@ -423,7 +424,7 @@ $environment=[];
             $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri."api/application/servers");
                                 
                 //$this->verifyStatusCode($response, 201);
-                                    dump(json_decode($response->getBody()));
+                                    //dump(json_decode($response->getBody()));
 
                                     if (!$this->verifyStatusCode($response, 200)){return false;}
                                     return $response;
@@ -484,7 +485,7 @@ $environment=[];
                     $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint."nests");
                                         
                         //$this->verifyStatusCode($response, 201);
-                                            dump(json_decode($response->getBody()));
+                                            //dump(json_decode($response->getBody()));
                        
                             // return $obj["attributes"]["id"];
 
@@ -509,7 +510,7 @@ $environment=[];
                                             
                             $this->verifyStatusCode($response, 200);
 
-                            dump(json_decode($response->getBody()));
+                            //dump(json_decode($response->getBody()));
                                                          
                                 foreach($response['data'] as $obj){
                                 return$obj["attributes"]["id"];
@@ -530,7 +531,7 @@ $environment=[];
                             $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint."nodes");
                                                 
                                 //$this->verifyStatusCode($response, 201);
-                                                    dump(json_decode($response->getBody()));
+                                                    //dump(json_decode($response->getBody()));
                                
                                     // return $obj["attributes"]["id"];
                                     if ($this->verifyStatusCode($response, 200)){return false;}
@@ -551,7 +552,7 @@ $environment=[];
                                 $response = Http::timeout(400)->withToken($this->apikey)->get($this->uri.$this->endpoint."nests/2/eggs/9");
                                                     
                                     //$this->verifyStatusCode($response, 201);
-                                                        dump(json_decode($response->getBody()));
+                                                        //dump(json_decode($response->getBody()));
 
                                                         if ($this->verifyStatusCode($response, 200)){return false;}
                                                         return $response;
@@ -573,7 +574,7 @@ $environment=[];
                             else{return false;}
                             $count = 0;
 
-                                            dump($alloc_ptero);
+                                            //dump($alloc_ptero);
                                 foreach($alloc_ptero['data'] as $ap){
                                    
                                     if(!$ap['attributes']['assigned']){
@@ -598,8 +599,8 @@ $environment=[];
                                     $c = $c+1;
                                     if(!$ap["attributes"]['assigned']){
                                        
-                                        //dump($c);
-
+                                        ////dump($c);
+                                        
                                         return $ap["attributes"]['id'];
 
                                     }
@@ -634,7 +635,8 @@ $environment=[];
 
 
                                 foreach($infoserver->attributes as $info=>$value){
-
+                                
+                           
                                     if($info=="node"){
                                         $node_id = $value;
                                     }
@@ -653,10 +655,10 @@ $environment=[];
                             if (!$this->verifyStatusCode($response, 200)){
                               return false;
                             }
-                            dump(json_decode($response->getBody()));
+                            //dump(json_decode($response->getBody()));
 
                                 foreach($response['data'] as $ap){
-                                    dump($id_allocation);
+                                    //dump($id_allocation);
                                     if($ap["attributes"]['id'] ==$id_allocation){
                                         $ip = $ap["attributes"]['ip'];
                                         $port = $ap["attributes"]['port'];
